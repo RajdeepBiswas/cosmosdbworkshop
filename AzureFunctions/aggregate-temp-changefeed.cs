@@ -30,14 +30,11 @@ public static void Run(IReadOnlyList<Document> input, IAsyncCollector<objAgg> ou
  var ESIID = "10089010119004454XXXXX";
  
  double myavg = 0;
- //double mymax = 0;
- //double mymin = 0;
  
  DateTime dt_tm;
- //string strdt;
- //string strtm;
+ 
  int dt_min;
- double modresult;
+ double modresult = 0;
  double Temp_F = 0;
  
  Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -55,12 +52,10 @@ public static void Run(IReadOnlyList<Document> input, IAsyncCollector<objAgg> ou
  {
  if (changeInput.GetPropertyValue <string>("entitytype") == entitytype)
  {
- Temp_F = changeInput.GetPropertyValue <double>("Temp_F");
- //strdt = changeInput.GetPropertyValue <string>("dt_tm");
+ 
  dt_tm = DateTime.Parse(changeInput.GetPropertyValue <string>("dt_tm"));
  
  log.LogInformation("entitytype: " + changeInput.GetPropertyValue <string>("entitytype"));
- log.LogInformation("Temp_F: " + Temp_F);
  log.LogInformation("dt_tm: " + changeInput.GetPropertyValue <string>("dt_tm"));
  log.LogInformation("minute: " + dt_tm.Minute);
  
@@ -93,7 +88,7 @@ public static void Run(IReadOnlyList<Document> input, IAsyncCollector<objAgg> ou
  var myjson = "{'ESIID':'" + ESIID + "'" + 
  ",'entitytype':'" + entitytypeout + "'" +
  ",'dt_tm':'" + ddtcentral + "'" + 
- ",'avg_temp_f':" + myavg + 
+ ",'avg_temp_f':" + myavg +  
  "}";
  
  log.LogInformation("myjson: " + myjson); 
@@ -104,10 +99,6 @@ public static void Run(IReadOnlyList<Document> input, IAsyncCollector<objAgg> ou
  
  }
  
- if (modresult == 0)
- {
- log.LogInformation("hello world!");
- } 
  }
  }
 }
@@ -117,6 +108,5 @@ public class objAgg
  public string ESIID { get; set; }
  public string dt_tm { get; set; }
  public double avg_temp_f { get; set; }
- //public string avg_temp_f { get; set; }
  public string entitytype { get; set; }
 }
